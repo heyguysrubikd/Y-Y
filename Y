@@ -1,0 +1,37 @@
+class YY:
+  def __init__(self, code):
+    self.code = code
+    self.data = []
+    self.code_ptr = 0
+    self.data_ptr = len(self.data) - 1
+
+  def run(self):
+    while self.code_ptr < len(self.code):
+      char = self.code[self.code_ptr]
+      if char == 'Y':
+        self.data[self.data_ptr] = self.code[self.code_ptr + 1]
+        self.code_ptr += 2
+      elif char == 'L':
+        self.code[self.code_ptr] = self.data[self.data_ptr]
+        self.code_ptr += 1
+      elif char == '$':
+        self.code_ptr = self.data_ptr
+      elif char == '#':
+        self.data_ptr = self.code_ptr - 1
+      elif char == ';':
+        self.data.append(input())
+        self.data_ptr += 1
+      elif char == '&':
+        for item in self.data:
+          print(item)
+      elif char == '/':
+        self.data[self.data_ptr] = bin(ord(self.data[self.data_ptr]))[2:].zfill(8)[::-1]
+      else:
+        self.data.append(char)
+        self.data_ptr += 1
+      self.code_ptr += 1
+
+# Example usage
+code = "A&A"
+yy = YY(code)
+yy.run()
